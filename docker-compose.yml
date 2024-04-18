@@ -1,0 +1,65 @@
+version: "3"
+
+services:
+  web:
+    image: node:20-slim
+    volumes:
+      - ./rese-frontend:/var/www/html
+      - ./.env.frontend:/var/www/html/.env.local
+    ports:
+      - 80:5173
+      - 6006:6006
+    working_dir: /var/www/html
+    command: >
+      bash -c "npm install && npx vite --host 0.0.0.0 --port 5173"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    volumes:
+      - ./rese-backend:/var/www/html
+      - ./.env.backend:/var/www/html/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /var/www/html
+    command: >
+      bash -c "npm install && composer update && composer install --prefer-dist && php artisan key:generate && php artisan migrate --seed && php artisan storage:link && php artisan serve --host 0.0.0.0"
+
+  db:
+    image: "mysql/mysql-server:8.0"
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rese_db
+      MYSQL_USER: rese_admin
+      MYSQL_PASSWORD: password
+    volumes:
+      - "rese-db:/var/lib/mysql"
+    healthcheck:
+      test:
+        - "CMD"
+        - "mysqladmin"
+        - "ping"
+        - "-h"
+        - "127.0.0.1"
+        - "-u"
+        - "rese_admin"
+        - "-ppassword"
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  mailpit:
+    image: "axllent/mailpit:latest"
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+volumes:
+  rese-db:
+    driver: local

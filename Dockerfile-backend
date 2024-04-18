@@ -1,0 +1,25 @@
+FROM php:8.2
+
+RUN apt-get update && apt-get install -y \
+    git \
+    zip \
+    unzip \
+    cron \
+    zlib1g-dev \
+    libicu-dev \
+    libjpeg-dev \
+    libpng-dev \
+    nodejs \
+    npm
+
+RUN docker-php-ext-install pdo_mysql intl
+RUN docker-php-ext-configure gd --with-jpeg
+RUN docker-php-ext-install -j$(nproc) gd
+RUN npm install -g npm
+
+RUN echo '* * * * * root cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1' >> /etc/crontab
+RUN service cron start
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+EXPOSE 8000

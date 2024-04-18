@@ -1,0 +1,6 @@
+[submodule "rese-backend"]
+	path = rese-backend
+	url = git@github.com:ryamao/rese-backend.git
+[submodule "rese-frontend"]
+	path = rese-frontend
+	url = git@github.com:ryamao/rese-frontend.git
