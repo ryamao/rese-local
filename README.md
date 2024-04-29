@@ -223,41 +223,6 @@ https://web-no-benkyo.com
 | created_at | timestamp |  |  |  |
 | updated_at | timestamp |  |  |  |
 
-### failed_jobs テーブル
-
-| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
-|---|---|---|---|---|---|
-| id | unsigned bigint | ○ | ○ | ○ |  |
-| uuid | varchar(255) |  |  | ○ |  |
-| connection | text |  |  | ○ |  |
-| queue | text |  |  | ○ |  |
-| payload | longtext |  |  | ○ |  |
-| exception | longtext |  |  |  |  |
-| failed_at | timestamp |  |  |  |  |
-
-### personal_access_tokens テーブル
-
-| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
-|---|---|---|---|---|---|
-| id | unsigned bigint | ○ | ○ | ○ |  |
-| tokenable_type | varchar(255) |  |  | ○ |  |
-| tokenable_id | unsigned bigint |  |  | ○ |  |
-| name | varchar(255) |  |  | ○ |  |
-| token | varchar(64) |  |  | ○ |  |
-| abilities | text |  |  |  |  |
-| last_used_at | timestamp |  |  |  |
-| expires_at | timestamp |  |  |  |
-| created_at | timestamp |  |  |  |
-| updated_at | timestamp |  |  |  |
-
-### password_reset_tokens テーブル
-
-| カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
-|---|---|---|---|---|---|
-| email | varchar(255) | ○ | ○ | ○ |  |
-| token | varchar(255) |  |  | ○ |  |
-| created_at | timestamp |  |  |  |
-
 ### sessions テーブル
 
 | カラム名 | 型 | PRIMARY KEY | UNIQUE KEY | NOT NULL | FOREIGN KEY |
